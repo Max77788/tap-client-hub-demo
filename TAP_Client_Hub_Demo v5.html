@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TAP Associates — Client Hub (Demo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#eef1f6; --card:#ffffff; --ink:#1a2340; --muted:#5f667d;
+    --line:#dde2ec; --teal:#1c2a5e; --teal-soft:#e7ebf5; --teal-ink:#16234d;
+    --amber:#b9791f; --amber-soft:#f7edda; --red:#a8392f; --red-soft:#f6e2df;
+    --green:#2f7d4f; --green-soft:#e3efe6; --blue:#2c5d86; --blue-soft:#e0eaf2;
+    --paid:#1c2a5e; --paid-soft:#e7ebf5;
+    --shadow:0 1px 2px rgba(26,35,64,.06),0 8px 24px rgba(26,35,64,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Public Sans",system-ui,sans-serif;background:var(--paper);color:var(--ink);
+    -webkit-font-smoothing:antialiased;font-size:15px;line-height:1.45}
+  h1,h2,h3,.disp{font-family:"Fraunces",Georgia,serif;letter-spacing:-.01em}
+  .app{display:flex;min-height:100vh}
+  /* SIDEBAR */
+  .side{width:236px;flex:0 0 236px;background:linear-gradient(180deg,#21305f 0%,#1a2750 100%);color:#eef2fb;
+    display:flex;flex-direction:column;padding:22px 16px;position:sticky;top:0;height:100vh}
+  .brand{font-family:"Fraunces";font-weight:600;font-size:24px;color:#fff;line-height:1}
+  .brand small{display:block;font-family:"Public Sans";font-weight:500;font-size:10.5px;
+    letter-spacing:.13em;text-transform:uppercase;color:#9fb0d8;margin-top:6px}
+  .nav{margin-top:28px;display:flex;flex-direction:column;gap:3px;flex:1}
+  .nav button{all:unset;cursor:pointer;display:flex;align-items:center;gap:11px;
+    padding:10px 12px;border-radius:10px;font-weight:500;color:#c4cee8;font-size:14px;transition:.15s}
+  .nav button .ic{width:18px;text-align:center;font-size:15px;opacity:.9}
+  .nav button .ct{margin-left:auto;background:rgba(255,255,255,.16);color:#eef2fb;
+    font-size:11px;font-weight:700;padding:1px 7px;border-radius:20px}
+  .nav button:hover{background:rgba(255,255,255,.10);color:#fff}
+  .nav button.on{background:#ffffff;color:var(--teal-ink);font-weight:600}
+  .nav button.on .ct{background:var(--teal-soft);color:var(--teal-ink)}
+  .nav .sep{height:1px;background:rgba(255,255,255,.14);margin:12px 6px}
+  .side .foot{font-size:11px;color:#8a9bc6;line-height:1.5}
+  /* MAIN */
+  .main{flex:1;min-width:0;display:flex;flex-direction:column}
+  .top{padding:22px 32px 0;display:flex;align-items:flex-end;justify-content:space-between;gap:18px}
+  .top h1{font-size:30px;font-weight:600}
+  .top p{color:var(--muted);font-size:13.5px;margin-top:3px}
+  .wrap{padding:18px 32px 48px}
+  /* banner */
+  .tip{background:var(--teal-soft);border:1px solid #cdd6ec;border-radius:14px;
+    padding:13px 16px;display:flex;gap:12px;align-items:flex-start;margin:14px 32px 0;color:var(--teal-ink)}
+  .tip b{font-weight:700}
+  .tip .x{margin-left:auto;cursor:pointer;border:none;background:none;color:var(--teal-ink);
+    font-size:18px;opacity:.6;line-height:1}
+  .tip .x:hover{opacity:1}
+  /* controls */
+  .controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:16px 0 4px}
+  .search{flex:1;min-width:220px;position:relative}
+  .search input{width:100%;padding:11px 14px 11px 38px;border:1px solid var(--line);
+    border-radius:11px;background:var(--card);font:inherit;font-size:14px}
+  .search input:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-soft)}
+  .search .mag{position:absolute;left:13px;top:11px;opacity:.45}
+  .seg{display:flex;background:var(--card);border:1px solid var(--line);border-radius:11px;padding:3px}
+  .seg button{all:unset;cursor:pointer;padding:7px 13px;border-radius:8px;font-size:13px;
+    font-weight:500;color:var(--muted)}
+  .seg button.on{background:var(--teal);color:#fff;font-weight:600}
+  select.pick{padding:10px 12px;border:1px solid var(--line);border-radius:11px;background:var(--card);
+    font:inherit;font-size:13.5px;color:var(--ink)}
+  .btn{all:unset;cursor:pointer;background:var(--ink);color:#fff;padding:10px 16px;border-radius:11px;
+    font-weight:600;font-size:13.5px;display:inline-flex;gap:7px;align-items:center}
+  .btn:hover{opacity:.9}
+  .btn.alt{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+  .count{color:var(--muted);font-size:13px;margin:12px 2px 6px}
+  .stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+  .statcard{flex:1;min-width:120px;background:var(--card);border:1px solid var(--line);border-radius:13px;
+    padding:13px 16px;box-shadow:0 1px 2px rgba(33,31,26,.04)}
+  .statcard .sn{font-family:"Fraunces";font-weight:600;font-size:26px;line-height:1}
+  .statcard .sl{font-size:12px;color:var(--muted);margin-top:4px}
+  /* workload */
+  .sect2{font-family:"Fraunces";font-weight:600;font-size:18px;margin:26px 0 10px}
+  .insight{display:flex;gap:12px;background:var(--amber-soft);border:1px solid #ead9b6;color:#6b4a12;
+    border-radius:14px;padding:14px 16px;margin-top:16px;font-size:13.5px;line-height:1.5}
+  .insight b{color:#4a3208}
+  .legend{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-bottom:8px;font-size:12px;color:var(--muted)}
+  .lgd{display:flex;align-items:center;gap:6px}
+  .lgd i{width:11px;height:11px;border-radius:3px;display:inline-block}
+  .lgd-note{margin-left:auto;font-style:italic;opacity:.8}
+  .wrow{display:grid;grid-template-columns:170px 1fr 120px;align-items:center;gap:14px;padding:10px 0;
+    border-bottom:1px solid #efeade}
+  .wrow:last-child{border-bottom:none}
+  .wrow-u{opacity:.92}
+  .wname{font-weight:600;font-size:14px;line-height:1.25}
+  .wname .wsub{display:block;font-weight:500;font-size:11.5px;color:var(--muted);margin-top:2px}
+  .wtrack{display:flex;height:22px;border-radius:7px;overflow:hidden;background:#efeade}
+  .wseg{height:100%;transition:width .5s cubic-bezier(.4,0,.2,1)}
+  .wload{text-align:right}
+  .wload b{font-family:"Fraunces";font-size:19px}
+  .wdiff{display:block;font-size:11px;font-weight:600;margin-top:1px}
+  .d-hi{color:var(--amber)} .d-lo{color:var(--green)} .d-mid{color:var(--muted)}
+  .wrow-u .wdiff{color:var(--red)}
+  .chips2{display:flex;flex-wrap:wrap;gap:5px}
+  .schip{font-size:11.5px;font-weight:500;padding:3px 9px;border-radius:20px;
+    background:color-mix(in srgb,var(--c) 12%,#fff);color:var(--c);border:1px solid color-mix(in srgb,var(--c) 25%,#fff)}
+  .schip b{font-weight:700}
+  .lname2{font-weight:600}
+  .fineprint{font-size:11.5px;color:var(--muted);line-height:1.5;margin:14px 2px 0;font-style:italic}
+  /* support */
+  .supgrid{display:flex;gap:16px;align-items:flex-start;margin-top:16px}
+  .supmain{flex:2;min-width:0}.supside{flex:1;min-width:240px;display:flex;flex-direction:column;gap:14px}
+  .suph{font-family:"Fraunces";font-weight:600;font-size:21px}
+  .suph2{font-family:"Fraunces";font-weight:600;font-size:16px;margin-bottom:12px}
+  .suphint{color:var(--muted);font-size:13.5px;margin:5px 0 14px;line-height:1.5}
+  .shot-note{display:flex;gap:10px;background:var(--amber-soft);border:1px solid #e8d3a6;color:#7a5210;
+    border-radius:12px;padding:12px 14px;font-size:13px;line-height:1.5;margin-bottom:16px}
+  .supmain .sl{display:block;font-size:11.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--muted);margin:14px 0 5px}
+  .supmain input,.supmain select,.supmain textarea{width:100%;padding:10px 12px;border:1px solid var(--line);
+    border-radius:10px;font:inherit;font-size:14px;background:#fff;resize:vertical}
+  .supmain input:focus,.supmain select:focus,.supmain textarea:focus{outline:none;border-color:var(--teal);
+    box-shadow:0 0 0 3px var(--teal-soft)}
+  .sup2{display:flex;gap:12px;margin:0}.sup2>div{flex:1}
+  .urgrow{display:flex;align-items:center;gap:9px;margin:14px 0 2px;font-size:13.5px;cursor:pointer;
+    background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 13px}
+  .urgrow input{width:auto!important}
+  .subjbox{margin-top:16px;background:#f3f6fc;border:1px dashed #c3cde6;border-radius:11px;padding:11px 14px}
+  .subjbox span{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .subjbox div{font-size:13.5px;margin-top:4px;color:var(--ink);word-break:break-word}
+  .supcontact{padding:18px 20px}
+  .contact{display:flex;align-items:center;gap:12px;padding:11px 12px;border:1px solid var(--line);
+    border-radius:11px;margin-bottom:9px;text-decoration:none;color:var(--ink);transition:.12s}
+  .contact:hover{border-color:var(--teal);background:var(--teal-soft)}
+  .contact .ci{width:34px;height:34px;border-radius:9px;background:var(--teal-soft);display:flex;
+    align-items:center;justify-content:center;font-size:16px}
+  .contact .ct{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+  .contact .cv{font-weight:600;font-size:13.5px}
+  .provby{font-size:12px;color:var(--muted);margin-top:4px;text-align:center}
+  .provby b{color:var(--teal)}
+  .step{display:flex;gap:11px;padding:8px 0;border-bottom:1px solid #eef1f6}
+  .step:last-child{border-bottom:none}
+  .stepn{flex:0 0 24px;height:24px;border-radius:50%;background:var(--teal);color:#fff;font-weight:700;
+    font-size:12px;display:flex;align-items:center;justify-content:center}
+  .stept{font-weight:600;font-size:13.5px}.stepd{font-size:12.5px;color:var(--muted);line-height:1.45;margin-top:1px}
+  .egood{font-size:12.5px;color:var(--green);margin-bottom:6px}
+  .ebad{font-size:12.5px;color:var(--red)}
+  .egood .mono,.ebad .mono{color:var(--ink)}
+  @media(max-width:780px){.supgrid{flex-direction:column}.supside{width:100%}}
+  @media(max-width:620px){.wrow{grid-template-columns:1fr;gap:6px}.wtrack{order:3}.wload{text-align:left}}
+  /* client cards */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
+  .ccard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 16px;
+    cursor:pointer;transition:.14s;box-shadow:0 1px 2px rgba(33,31,26,.04)}
+  .ccard:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:#cfc7b5}
+  .ccard .nm{font-family:"Fraunces";font-weight:600;font-size:16.5px;line-height:1.2}
+  .ccard .meta{color:var(--muted);font-size:12.5px;margin-top:3px}
+  .ccard .row2{display:flex;align-items:center;justify-content:space-between;margin-top:11px}
+  .pills{display:flex;gap:5px;flex-wrap:wrap}
+  .pill{font-size:10.5px;font-weight:700;letter-spacing:.02em;padding:3px 8px;border-radius:20px}
+  .p-fin{background:var(--green-soft);color:#1d5734}
+  .p-pr{background:var(--blue-soft);color:#214b6e}
+  .p-stx{background:var(--amber-soft);color:#8a560f}
+  .p-tax{background:#ece7f3;color:#5a4a80}
+  .p-9{background:#f0e8e2;color:#7a5436}
+  .p-rn{background:#e7eee8;color:#3a5a44}
+  .badge{font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:20px;text-transform:uppercase;letter-spacing:.05em}
+  .b-biz{background:var(--ink);color:#fff}
+  .b-per{background:#dfe7e6;color:var(--teal-ink)}
+  .assignee{font-size:12px;color:var(--muted)}
+  .assignee b{color:var(--ink);font-weight:600}
+  /* worklist tables */
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-top:6px}
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th{text-align:left;font-weight:600;color:var(--muted);font-size:11.5px;letter-spacing:.04em;
+    text-transform:uppercase;padding:13px 14px;background:#faf7f0;border-bottom:1px solid var(--line)}
+  td{padding:12px 14px;border-bottom:1px solid #efeade;vertical-align:middle}
+  tr:last-child td{border-bottom:none}
+  tbody tr:hover{background:#fcfaf4}
+  .lname{font-weight:600;cursor:pointer}
+  .lname:hover{color:var(--teal);text-decoration:underline}
+  .mono{font-variant-numeric:tabular-nums}
+  /* month grid */
+  .mcell{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:#fff;
+    cursor:pointer;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;
+    margin:0 auto;transition:.1s;user-select:none}
+  .mcell.done{background:var(--green-soft);border-color:#bcdcc6;color:var(--green)}
+  .mcell.bill{background:var(--amber-soft);border-color:#e8d3a6;color:var(--amber)}
+  .mcell.paid{background:var(--paid);border-color:var(--paid);color:#fff}
+  .mcell.na{background:var(--red-soft);border-color:#e8c4bf;color:var(--red)}
+  .mcell.lock{background:transparent;border-color:transparent;color:#c2c8d4;cursor:default}
+  .mcell.lock:hover{border-color:transparent}
+  .mh-now{color:var(--teal)!important;position:relative}
+  .mh-now::after{content:"";position:absolute;left:6px;right:6px;bottom:4px;height:2px;background:var(--teal);border-radius:2px}
+  .mtd-now{background:#f3f6fc}
+  .lgd i.lg-done{background:var(--green)}.lgd i.lg-bill{background:var(--amber)}
+  .lgd i.lg-paid{background:var(--paid)}.lgd i.lg-na{background:var(--red)}
+  .lgd i.lg-lock{background:#c2c8d4}
+  .mcell:hover{border-color:var(--teal)}
+  th.mh{text-align:center;padding:11px 4px}
+  td.mtd{text-align:center;padding:7px 3px}
+  .empty{padding:40px;text-align:center;color:var(--muted)}
+  /* slide-over */
+  .scrim{position:fixed;inset:0;background:rgba(33,31,26,.34);opacity:0;pointer-events:none;
+    transition:.2s;z-index:40}
+  .scrim.show{opacity:1;pointer-events:auto}
+  .over{position:fixed;top:0;right:0;height:100vh;width:460px;max-width:92vw;background:var(--paper);
+    box-shadow:-12px 0 40px rgba(33,31,26,.18);transform:translateX(102%);transition:.24s cubic-bezier(.4,0,.2,1);
+    z-index:50;display:flex;flex-direction:column}
+  .over.show{transform:translateX(0)}
+  .ohead{padding:22px 24px 16px;border-bottom:1px solid var(--line);background:var(--card)}
+  .ohead .nm{font-family:"Fraunces";font-weight:600;font-size:23px;line-height:1.12}
+  .ohead .sub{color:var(--muted);font-size:13px;margin-top:5px}
+  .obody{overflow-y:auto;padding:20px 24px 30px;flex:1}
+  .sect{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+    margin:22px 0 10px}
+  .sect:first-child{margin-top:0}
+  .field{display:flex;justify-content:space-between;gap:14px;padding:7px 0;font-size:13.5px;border-bottom:1px dashed #e7e1d3}
+  .field .k{color:var(--muted)}
+  .field .v{text-align:right;font-weight:500}
+  /* service toggle rows */
+  .svc{display:flex;align-items:center;gap:12px;padding:12px 13px;background:var(--card);
+    border:1px solid var(--line);border-radius:12px;margin-bottom:8px}
+  .svc .si{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px}
+  .svc .st{flex:1}
+  .svc .st .t{font-weight:600;font-size:14px}
+  .svc .st .d{font-size:12px;color:var(--muted)}
+  .sw{width:46px;height:27px;border-radius:20px;background:#d8d2c4;position:relative;cursor:pointer;
+    transition:.16s;flex:0 0 auto}
+  .sw::after{content:"";position:absolute;top:3px;left:3px;width:21px;height:21px;border-radius:50%;
+    background:#fff;transition:.16s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+  .sw.on{background:var(--teal)}
+  .sw.on::after{left:22px}
+  .ofoot{padding:14px 24px;border-top:1px solid var(--line);background:var(--card);display:flex;gap:10px}
+  .ox{all:unset;cursor:pointer;font-size:22px;color:var(--muted);line-height:1}
+  .ox:hover{color:var(--ink)}
+  .danger{all:unset;cursor:pointer;color:var(--red);font-weight:600;font-size:13.5px;padding:10px 14px;
+    border:1px solid var(--red-soft);border-radius:11px;background:var(--red-soft)}
+  .danger:hover{background:#f0d4cf}
+  /* toast */
+  .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);
+    background:var(--teal-ink);color:#fff;padding:13px 20px;border-radius:13px;font-size:13.5px;font-weight:500;
+    box-shadow:0 10px 30px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:.22s;z-index:80;max-width:90vw}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .toast b{font-weight:700}
+  /* vault */
+  .vault-lock{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:70px 20px;
+    text-align:center}
+  .vault-lock .big{font-size:46px}
+  .vault-lock h2{font-size:24px;margin:14px 0 6px}
+  .vault-lock p{color:var(--muted);max-width:440px;margin-bottom:18px}
+  .vault-note{background:var(--amber-soft);border:1px solid #ead9b6;color:#7a5210;border-radius:13px;
+    padding:13px 16px;margin-bottom:14px;font-size:13px;display:flex;gap:10px}
+  .reveal{all:unset;cursor:pointer;color:var(--teal);font-weight:600;font-size:12.5px}
+  /* modal */
+  .mscrim{position:fixed;inset:0;background:rgba(33,31,26,.4);display:none;align-items:center;
+    justify-content:center;z-index:60;padding:20px}
+  .mscrim.show{display:flex}
+  .modal{background:var(--paper);border-radius:18px;width:480px;max-width:100%;max-height:90vh;overflow-y:auto;
+    box-shadow:var(--shadow)}
+  .modal h2{font-size:22px;padding:20px 24px 4px}
+  .modal .msub{color:var(--muted);font-size:13px;padding:0 24px 14px;border-bottom:1px solid var(--line)}
+  .mform{padding:18px 24px}
+  .mform label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin:12px 0 5px;
+    text-transform:uppercase;letter-spacing:.04em}
+  .mform input,.mform select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;
+    font:inherit;font-size:14px;background:var(--card)}
+  .mform input:focus,.mform select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-soft)}
+  .mform .two{display:flex;gap:12px}.mform .two>div{flex:1}
+  .cidbox{display:flex;align-items:center;gap:8px;background:var(--teal-soft);border:1px solid #cdd6ec;
+    border-radius:11px;padding:10px 14px;font-size:13px;color:var(--teal-ink);font-weight:600;margin-bottom:4px}
+  .cidbox b{font-size:15px}.cidbox span{margin-left:auto;font-weight:500;font-size:11px;
+    text-transform:uppercase;letter-spacing:.05em;opacity:.7}
+  .fsect{font-family:"Fraunces";font-weight:600;font-size:15px;color:var(--ink);margin:20px 0 6px;
+    padding-bottom:6px;border-bottom:1px solid var(--line)}
+  .fsect .opt{font-family:"Public Sans";font-weight:500;font-size:12px;color:var(--muted)}
+  .mform label .opt,.opt{font-weight:500;color:var(--muted);text-transform:none;letter-spacing:0}
+  .svccard{background:var(--card);border:1px solid var(--line);border-radius:11px;margin-bottom:8px;overflow:hidden}
+  .svctop{display:flex!important;align-items:center;gap:10px;padding:11px 13px;margin:0!important;cursor:pointer;
+    font-size:14px;font-weight:600;color:var(--ink);text-transform:none;letter-spacing:0}
+  .svctop input{width:auto!important}.svcic{font-size:16px}
+  .svcsub{max-height:0;opacity:0;padding:0 13px;transition:.18s;background:#faf7f0}
+  .svcsub.open{max-height:200px;opacity:1;padding:6px 13px 13px;border-top:1px solid var(--line)}
+  .svcsub label{margin-top:8px}
+  .mfoot{padding:6px 24px 22px;display:flex;gap:10px;justify-content:flex-end}
+  @media(max-width:720px){.side{display:none}.top,.wrap,.tip{padding-left:18px;padding-right:18px}.tip{margin-left:18px;margin-right:18px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand">TAP<small>Associates, LLC · Est. 1999</small></div>
+    <nav class="nav" id="nav"></nav>
+    <div class="foot">Demo prototype · one entry,<br>flows everywhere · no formulas</div>
+  </aside>
+
+  <main class="main">
+    <div class="top">
+      <div><h1 id="vTitle">Clients</h1><p id="vSub"></p></div>
+      <div id="vAction"></div>
+    </div>
+    <div class="tip" id="tip">
+      <span>👋</span>
+      <div><b>Try this:</b> open any client → flip <b>Payroll</b> or <b>Sales&nbsp;Tax</b> on, then check that service in the left menu. The client moves there automatically — nobody re-types anything.</div>
+      <button class="x" onclick="document.getElementById('tip').style.display='none'">×</button>
+    </div>
+    <div class="wrap" id="view"></div>
+  </main>
+</div>
+
+<div class="scrim" id="scrim" onclick="closeOver()"></div>
+<div class="over" id="over"></div>
+
+<div class="mscrim" id="mscrim"><div class="modal" id="modal"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- seed data (real client names from the workbook; credentials are dummy) ---------- */
+const STAFF=["Mike","Sam","Lizette","Janeth","Alvarez","Shelpa","Unassigned"];
+let nextId=200;
+let nextCid=0;
+let clients=[
+ mk("303A Properties LLC","Business","Kalcorp","Mike","College Station","TX","hege@kalcorp.com","(979) 555-0142",
+    {fin:1,finFreq:"Monthly",rend:1},["d","d","d","d","d","d","d","d","d","d","d","d"]),
+ mk("Aaron Edwards PLLC (dba Katy Dental Studio)","Business","Edwards","Sam","Katy","TX","aedwardsdmd@gmail.com","(281) 555-0193",
+    {fin:1,finFreq:"Monthly",pr:1,prFreq:"Bi-Weekly",prProc:"Sure Payroll",t9:1},["d","d","d","d","d","na","","","","","",""]),
+ mk("Abbasi Insurance Group Inc","Business","Abbasi","Sam","Houston","TX","asad@abbasigroup.com","(713) 555-0118",
+    {fin:1,finFreq:"Monthly",t9:1},["d","d","d","na","na","","","","","","",""]),
+ mk("Gastro Concepts LP","Business","Shammi Group","Lizette","Houston","TX","accounts@tapallc.com","(713) 555-0177",
+    {fin:1,finFreq:"Monthly",stx:1,stxFreq:"Monthly",pr:1,prFreq:"Weekly",prProc:"Toast"},["d","d","d","d","","","","","","","",""]),
+ mk("D'Souza Inc (dba Wallaby)","Business","D'Souza","Lizette","Houston","TX","dsouza@example.com","(832) 555-0150",
+    {stx:1,stxFreq:"Monthly",pr:1,prFreq:"Weekly",prProc:"QuickBooks Desktop"},["","","","","","","","","","","",""]),
+ mk("Benry Utility Services LLC","Business","Individual","Lizette","Pearland","TX","benry@example.com","(281) 555-0166",
+    {stx:1,stxFreq:"Monthly"},["","","","","","","","","","","",""]),
+ mk("Clark, Duncan & Morris Inc","Business","Individual","Sam","Houston","TX","info@cdmcpa.com","(713) 555-0131",
+    {fin:1,finFreq:"Quarterly",stx:1,stxFreq:"Monthly"},["d","","","d","","","","","","","",""]),
+ mk("ASC Anesthesia Associates","Business","Mirza","Lizette","Sugar Land","TX","i.mirza50@gmail.com","(281) 555-0124",
+    {pr:1,prFreq:"Bi-Weekly",prProc:"ADP"},["","","","","","","","","","","",""]),
+ mk("Mohan Lal Enterprises Inc","Business","Mohan Lal","Janeth","Houston","TX","mohanlal@example.com","(713) 555-0188",
+    {fin:1,finFreq:"Monthly",pr:1,prFreq:"Weekly",prProc:"ADP",stx:1,stxFreq:"Monthly"},["d","d","","","","","","","","","",""]),
+ mk("SubMOA LLC","Business","Alvarez","Janeth","Houston","TX","submoa@example.com","(832) 555-0109",
+    {pr:1,prFreq:"Weekly",prProc:"ADP",fin:1,finFreq:"Monthly"},["d","d","d","","","","","","","","",""]),
+ mk("Imran Dar MD, PLLC","Business","Shelpa","Shelpa","Houston","TX","idar@example.com","(713) 555-0155",
+    {fin:1,finFreq:"Monthly",rend:1},["d","d","na","","","","","","","","",""]),
+ mk("North Texas Rheumatology PA","Business","Alvarez","Alvarez","McKinney","TX","ntr@example.com","(469) 555-0140",
+    {fin:1,finFreq:"Monthly",pr:1,prFreq:"Bi-Weekly",prProc:"ADP"},["d","d","d","d","","","","","","","",""]),
+ mk("Baljit Gambhir — Individual 1040","Personal","Gambhir","Sam","Houston","TX","baljit@gambhirs.net","(281) 955-2377",
+    {tax:1,taxType:"1040",ext:1},["","","","","","","","","","","",""]),
+ mk("Saritha Katikaneni — Individual 1040","Personal","Katikaneni","Lizette","West Lake Hills","TX","skatikaneni@gmail.com","(713) 555-0094",
+    {tax:1,taxType:"1040"},["","","","","","","","","","","",""]),
+];
+/* sample monthly fees so the billing view has numbers; one is left unset on purpose */
+const SAMPLE_FEES={ "303A Properties LLC":750,"Aaron Edwards PLLC (dba Katy Dental Studio)":600,
+ "Abbasi Insurance Group Inc":450,"Gastro Concepts LP":1200,"Clark, Duncan & Morris Inc":500,
+ "Imran Dar MD, PLLC":650,"Mohan Lal Enterprises Inc":900,"North Texas Rheumatology PA":850 };
+clients.forEach(c=>{ if(c.fin) c.fee=SAMPLE_FEES[c.name]||0; });
+function newCid(){return "TP|BS|"+String(++nextCid).padStart(4,"0");}
+function mk(name,type,group,assigned,city,st,email,phone,svc,months){
+ return {id:++nextId,cid:newCid(),name,type,group,assigned,city,st,email,phone,
+   addEmail:svc.addEmail||"", address:svc.address||"— (Houston metro)",zip:svc.zip||"770—",
+   fee:svc.fee||0,
+   fin:!!svc.fin,finFreq:svc.finFreq||"Monthly",
+   pr:!!svc.pr,prFreq:svc.prFreq||"Bi-Weekly",prProc:svc.prProc||"ADP",
+   stx:!!svc.stx,stxFreq:svc.stxFreq||"Monthly",
+   tax:!!svc.tax,taxType:svc.taxType||"Business",
+   t9:!!svc.t9, rend:!!svc.rend, ext:!!svc.ext,
+   track:{fin:months,pr:blank12(),stx:blank12(),t9:blank12(),rend:blank12()}};
+}
+function blank12(){return ["","","","","","","","","","","",""];}
+const MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+/* Every recurring service uses ONE tracker. Same click-to-advance mechanic
+   (blank -> stage… -> N/A -> blank); only the stage LABELS differ. Stored
+   keys stay uniform (d/b/p) so the cell colors are shared. */
+const STAGE_SETS={
+  fin: [{k:"d",l:"Done",t:"✓",cls:"done"},{k:"b",l:"Billed",t:"$",cls:"bill"},{k:"p",l:"Paid",t:"✓",cls:"paid"}],
+  pr:  [{k:"d",l:"Processed",t:"✓",cls:"done"},{k:"p",l:"Funded",t:"$",cls:"paid"}],
+  stx: [{k:"d",l:"Prepared",t:"✓",cls:"done"},{k:"b",l:"Filed",t:"↑",cls:"bill"},{k:"p",l:"Remitted",t:"$",cls:"paid"}],
+  t9:  [{k:"d",l:"Prepared",t:"✓",cls:"done"},{k:"p",l:"Filed",t:"↑",cls:"paid"}],
+  rend:[{k:"d",l:"Prepared",t:"✓",cls:"done"},{k:"p",l:"Filed",t:"↑",cls:"paid"}]
+};
+const SVC_LABEL={fin:"Financials",pr:"Payroll",stx:"Sales Tax",t9:"1099s",rend:"Renditions"};
+function svcFreq(c,svc){return svc==="fin"?c.finFreq:svc==="pr"?c.prFreq:svc==="stx"?c.stxFreq:"Yearly";}
+function activeMonths(freq){
+  if(freq==="Quarterly")return [2,5,8,11];
+  if(freq==="Yearly"||freq==="Annual")return [3];               // annual filing window (Apr)
+  return [0,1,2,3,4,5,6,7,8,9,10,11];                           // weekly/bi-weekly/monthly roll up to monthly
+}
+function isDue(c,svc,i){return activeMonths(svcFreq(c,svc)).includes(i);}
+function track(c,svc){c.track=c.track||{};if(!c.track[svc])c.track[svc]=blank12();return c.track[svc];}
+function stageMeta(svc,k){
+  if(!k)return {cls:"",t:"",l:"Not started"};
+  if(k==="na")return {cls:"na",t:"–",l:"N/A"};
+  return STAGE_SETS[svc].find(s=>s.k===k)||{cls:"",t:"",l:k};
+}
+function nextStage(svc,k){const o=["",...STAGE_SETS[svc].map(s=>s.k),"na"];return o[(o.indexOf(k||"")+1)%o.length];}
+function mCellHTML(c,svc,i,fromOver){
+  if(!isDue(c,svc,i))return `<div class="mcell lock" title="${MONTHS[i]} — not due at this cadence">·</div>`;
+  const m=stageMeta(svc,track(c,svc)[i]||"");
+  return `<div class="mcell ${m.cls}" title="${MONTHS[i]} — ${m.l}" onclick="cycle(${c.id},'${svc}',${i},${fromOver?true:false})">${m.t}</div>`;
+}
+/* seed payroll / sales-tax / 1099 / renditions tracking so the demo looks alive */
+(function seedTracking(){
+  const now=new Date().getMonth();
+  clients.forEach(c=>["pr","stx","t9","rend"].forEach(svc=>{
+    if(!c[svc])return;
+    const arr=track(c,svc), set=STAGE_SETS[svc], finalK=set[set.length-1].k;
+    activeMonths(svcFreq(c,svc)).forEach(i=>{
+      if(i<now)arr[i]=finalK;            // past periods completed
+      else if(i===now)arr[i]=set[0].k;   // current period in progress
+    });
+  }));
+})();
+const vault=[
+ {portal:"Toast (sales summary)",entity:"Gastro Concepts LP",user:"accounts1@tapallc.com",pw:"TAP•••••2021!"},
+ {portal:"ADP — Accountant Connect",entity:"Multiple",user:"TusharPatilCPA1",pw:"Tap••••28"},
+ {portal:"TX Comptroller (Sales Tax)",entity:"Firm login",user:"Tushar123",pw:"••••••••"},
+ {portal:"EFTPS (Payroll deposits)",entity:"Aaron Edwards PLLC",user:"AEDWARDS",pw:"King••••123"},
+];
+
+/* ---------- state ---------- */
+let route="clients", typeFilter="All", staffFilter="All", q="", openId=null, vaultUnlocked=false, editing=false;
+
+/* ---------- nav ---------- */
+const NAV=[
+ {k:"clients",ic:"👥",t:"Clients"},
+ {k:"workload",ic:"⚖️",t:"Team Workload"},
+ {k:"sep"},
+ {k:"fin",ic:"📊",t:"Monthly Financials"},
+ {k:"pr",ic:"💵",t:"Payroll"},
+ {k:"stx",ic:"🧾",t:"Sales Tax"},
+ {k:"t9",ic:"📄",t:"1099s"},
+ {k:"rend",ic:"🏠",t:"Renditions"},
+ {k:"sep"},
+ {k:"vault",ic:"🔒",t:"Password Vault"},
+ {k:"support",ic:"🛟",t:"Help & Support"},
+];
+function counts(){return{
+  clients:clients.length, fin:clients.filter(c=>c.fin).length, pr:clients.filter(c=>c.pr).length,
+  stx:clients.filter(c=>c.stx).length, t9:clients.filter(c=>c.t9).length, rend:clients.filter(c=>c.rend).length,
+  vault:vault.length };}
+function renderNav(){
+ const c=counts(); const n=document.getElementById("nav"); n.innerHTML="";
+ NAV.forEach(it=>{
+  if(it.k==="sep"){const d=document.createElement("div");d.className="sep";n.appendChild(d);return;}
+  const b=document.createElement("button"); if(route===it.k)b.className="on";
+  b.innerHTML=`<span class="ic">${it.ic}</span><span>${it.t}</span>`+
+    (c[it.k]!=null?`<span class="ct">${c[it.k]}</span>`:"");
+  b.onclick=()=>{route=it.k;render();}; n.appendChild(b);
+ });
+}
+
+/* ---------- views ---------- */
+function render(){
+ renderNav();
+ const titles={clients:["Clients","Your single source of truth — every client, business and personal, in one list."],
+  fin:["Monthly Financials","Bread & butter. Everyone here was flagged ‘Financials’ on their client card."],
+  pr:["Payroll","Auto-populated from clients with Payroll switched on."],
+  stx:["Sales Tax","Auto-populated from clients with Sales Tax switched on."],
+  t9:["1099s","Clients flagged for 1099 filing."],
+  rend:["Renditions","Property tax renditions — clients flagged for renditions."],
+  vault:["Password Vault","Portal logins. Kept separate from client files, on purpose."],
+  workload:["Team Workload","Who’s carrying what — by client count and by estimated effort. Spot overload before it bites."],
+  support:["Help & Support","Stuck on something? Open a ticket and our team will jump on it."]};
+ document.getElementById("vTitle").textContent=titles[route][0];
+ document.getElementById("vSub").textContent=titles[route][1];
+ const act=document.getElementById("vAction"); act.innerHTML="";
+ if(route==="clients"){
+   act.style.display="flex"; act.style.gap="8px";
+   const ex=document.createElement("button");ex.className="btn alt";
+   ex.innerHTML="⤓ Export to Excel";ex.onclick=exportCSV;act.appendChild(ex);
+   const b=document.createElement("button");b.className="btn";
+   b.innerHTML="＋ Add client";b.onclick=openAdd;act.appendChild(b);}
+ const v=document.getElementById("view");
+ if(route==="clients")v.innerHTML=viewClients();
+ else if(route==="vault")v.innerHTML=viewVault();
+ else if(route==="workload")v.innerHTML=viewWorkload();
+ else if(route==="support")v.innerHTML=viewSupport();
+ else v.innerHTML=viewWork(route);
+ wire();
+}
+
+function stat(n,l,col){return `<div class="statcard"><div class="sn" style="color:${col}">${n}</div><div class="sl">${l}</div></div>`;}
+function behind(){const m=new Date().getMonth();return clients.filter(c=>c.fin&&(track(c,'fin')[m]||"")==="").length;}
+function viewClients(){
+ let list=clients.filter(c=>(typeFilter==="All"||c.type===typeFilter)
+   &&(staffFilter==="All"||c.assigned===staffFilter)
+   &&(q===""||c.name.toLowerCase().includes(q)||c.group.toLowerCase().includes(q)));
+ list.sort((a,b)=>a.name.localeCompare(b.name));
+ const staffOpts=["All",...STAFF].map(s=>`<option ${staffFilter===s?"selected":""}>${s}</option>`).join("");
+ let cards=list.map(c=>{
+   const p=[]; if(c.fin)p.push('<span class="pill p-fin">FINANCIALS</span>');
+   if(c.pr)p.push('<span class="pill p-pr">PAYROLL</span>');
+   if(c.stx)p.push('<span class="pill p-stx">SALES TAX</span>');
+   if(c.tax)p.push('<span class="pill p-tax">TAX RTN</span>');
+   if(c.t9)p.push('<span class="pill p-9">1099</span>');
+   if(c.rend)p.push('<span class="pill p-rn">RENDITION</span>');
+   if(!p.length)p.push('<span class="pill" style="background:#eee;color:#888">No services</span>');
+   return `<div class="ccard" onclick="openClient(${c.id})">
+     <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start">
+       <div class="nm">${esc(c.name)}</div>
+       <span class="badge ${c.type==='Business'?'b-biz':'b-per'}">${c.type==='Business'?'BIZ':'PERS'}</span>
+     </div>
+     <div class="meta"><span class="mono" style="color:#9a9484">${c.cid}</span> · ${esc(c.group||'—')} · ${esc(c.city)}, ${c.st}</div>
+     <div class="pills" style="margin-top:10px">${p.join("")}</div>
+     <div class="row2"><span class="assignee">Handled by <b>${esc(c.assigned)}</b></span></div>
+   </div>`;}).join("");
+ return `<div class="stats">
+   ${stat(clients.length,"Total clients","var(--ink)")}
+   ${stat(clients.filter(c=>c.type==="Business").length,"Business","var(--teal)")}
+   ${stat(clients.filter(c=>c.type==="Personal").length,"Personal","var(--blue)")}
+   ${stat(clients.filter(c=>c.fin).length,"Monthly financials","var(--green)")}
+   ${stat(behind(),"Behind this month","var(--amber)")}
+  </div>
+  <div class="controls">
+   <div class="search"><span class="mag">🔍</span>
+     <input id="q" placeholder="Search client or group…" value="${esc(q)}"></div>
+   <div class="seg" id="seg">
+     ${["All","Business","Personal"].map(t=>`<button data-t="${t}" class="${typeFilter===t?'on':''}">${t}</button>`).join("")}
+   </div>
+   <select class="pick" id="staff">${staffOpts}</select>
+  </div>
+  <div class="count">${list.length} client${list.length!==1?"s":""} shown</div>
+  ${list.length?`<div class="grid">${cards}</div>`:`<div class="panel"><div class="empty">No clients match. Try clearing filters.</div></div>`}`;
+}
+
+function viewWork(kind){
+ let list=clients.filter(c=>c[kind]).sort((a,b)=>a.name.localeCompare(b.name));
+ if(!list.length)return `<div class="panel"><div class="empty">
+   No clients here yet.<br><br>Open a client and switch <b>${labelOf(kind)}</b> on — they’ll appear here instantly.</div></div>`;
+ const m=new Date().getMonth();
+ const stages=STAGE_SETS[kind];
+ let dueCount=0,notStarted=0,outstanding$=0,collected$=0; const sc={}; stages.forEach(s=>sc[s.k]=0);
+ list.forEach(c=>{
+   if(!isDue(c,kind,m))return;
+   dueCount++; const s=track(c,kind)[m]||"";
+   if(!s)notStarted++; else if(sc[s]!=null)sc[s]++;
+   if(kind==="fin"){const fee=c.fee||0; if(s==="b")outstanding$+=fee; else if(s==="p")collected$+=fee;}
+ });
+ const extraH = kind==="fin"?`<th class="mh">Fee</th>` : kind==="pr"?`<th>Processor</th>` : "";
+ const head=`<th>Client</th><th>Assigned</th><th>Cadence</th>${extraH}`
+   +MONTHS.map((mo,idx)=>`<th class="mh ${idx===m?'mh-now':''}">${mo}</th>`).join("");
+ const rows=list.map(c=>{
+   const extra = kind==="fin"?`<td class="mtd mono" style="color:var(--muted)">${c.fee?'$'+c.fee.toLocaleString():'—'}</td>`
+               : kind==="pr"?`<td>${esc(c.prProc)}</td>` : "";
+   const cells=MONTHS.map((mo,i)=>`<td class="mtd ${i===m?'mtd-now':''}">${mCellHTML(c,kind,i)}</td>`).join("");
+   return `<tr><td class="lname" onclick="openClient(${c.id})">${esc(c.name)}</td>
+     <td>${esc(c.assigned)}</td><td class="mono">${svcFreq(c,kind)}</td>${extra}${cells}</tr>`;}).join("");
+ let cards=stat(dueCount,"Due in "+MONTHS[m],"var(--ink)");
+ stages.forEach(s=>{const col=s.cls==="paid"?"var(--paid)":s.cls==="bill"?"var(--amber)":"var(--green)";
+   cards+=stat(sc[s.k]||0,s.l,col);});
+ cards+=stat(notStarted,"Not started","var(--red)");
+ if(kind==="fin"){cards+=stat('$'+outstanding$.toLocaleString(),"Outstanding $","var(--amber)");
+   cards+=stat('$'+collected$.toLocaleString(),"Collected $","var(--green)");}
+ const legend=`<div class="legend" style="margin:14px 0 2px">`
+   +stages.map(s=>`<span class="lgd"><i class="lg-${s.cls}"></i>${s.l}</span>`).join("")
+   +`<span class="lgd"><i class="lg-na"></i>N/A</span><span class="lgd"><i class="lg-lock"></i>Not due</span>`
+   +`<span class="lgd-note">click a cell to advance · grey = not due at this cadence</span></div>`;
+ const note = kind==="fin"
+   ? `Fee is the client’s monthly amount. “Outstanding” = billed, not yet received — invoices and payments still live in your accounting software.`
+   : kind==="stx"
+   ? `A client’s filing cadence sets which months are due — quarterly filers show 4, monthly show 12. Stages: Prepared → Filed → Remitted.`
+   : kind==="pr"
+   ? `Weekly and bi-weekly runs roll up to a monthly Processed → Funded status; the data model can drill into individual runs later.`
+   : `Annual filing — one period a year. Stages: Prepared → Filed.`;
+ return `<div class="stats">${cards}</div>`+legend+
+   `<div class="count">${list.length} ${labelOf(kind).toLowerCase()} client${list.length!==1?"s":""} · highlighted column = this month (${MONTHS[m]})</div>
+   <div class="panel" style="overflow-x:auto"><table><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>
+   <p class="fineprint">${note}</p>`;
+}
+
+/* ---------- workload analytics ---------- */
+const SVCMETA={
+  fin:{l:"Financials",ic:"📊",col:"#2f7d4f"}, pr:{l:"Payroll",ic:"💵",col:"#2c5d86"},
+  stx:{l:"Sales Tax",ic:"🧾",col:"#b9791f"}, tax:{l:"Tax Return",ic:"📋",col:"#5a4a80"},
+  t9:{l:"1099s",ic:"📄",col:"#7a5436"}, rend:{l:"Renditions",ic:"🏠",col:"#3a5a44"}};
+const FREQ_TP={Weekly:52,"Bi-Weekly":26,"Semi-Monthly":24,Monthly:12,Quarterly:4,Yearly:1};
+function svcLoad(c){ // estimated annual touchpoints per service
+  return {
+    fin: c.fin?(FREQ_TP[c.finFreq]||12):0,
+    pr:  c.pr?(FREQ_TP[c.prFreq]||26):0,
+    stx: c.stx?(FREQ_TP[c.stxFreq]||12):0,
+    tax: c.tax?4:0, t9:c.t9?2:0, rend:c.rend?2:0 };
+}
+function teamStats(){
+  const m=new Date().getMonth(); const map={};
+  clients.forEach(c=>{
+    const who=c.assigned||"Unassigned";
+    if(!map[who])map[who]={name:who,clients:0,load:0,rev:0,by:{fin:0,pr:0,stx:0,tax:0,t9:0,rend:0},
+      cnt:{fin:0,pr:0,stx:0,tax:0,t9:0,rend:0},behind:0};
+    const s=map[who]; s.clients++;
+    if(c.fin)s.rev+=(c.fee||0);
+    const L=svcLoad(c); let tot=0;
+    for(const k in L){ s.by[k]+=L[k]; tot+=L[k]; if(c[k])s.cnt[k]++; }
+    s.load+=tot;
+    if(c.fin&&(track(c,'fin')[m]||"")==="")s.behind++;
+  });
+  return Object.values(map).sort((a,b)=>b.load-a.load);
+}
+function viewWorkload(){
+  const stats=teamStats();
+  const real=stats.filter(s=>s.name!=="Unassigned"&&s.name!=="Inactive");
+  const unassigned=stats.find(s=>s.name==="Unassigned");
+  const maxLoad=Math.max(1,...stats.map(s=>s.load));
+  const avgClients=real.length?Math.round(clients.filter(c=>c.assigned&&c.assigned!=="Unassigned").length/real.length):0;
+  const avgLoad=real.length?Math.round(real.reduce((a,s)=>a+s.load,0)/real.length):0;
+  const busiest=real[0], lightest=real[real.length-1];
+
+  const legend=Object.entries(SVCMETA).map(([k,v])=>
+    `<span class="lgd"><i style="background:${v.col}"></i>${v.l}</span>`).join("");
+
+  const bars=stats.map(s=>{
+    const isU=s.name==="Unassigned";
+    const segs=Object.entries(SVCMETA).map(([k,v])=>{
+      if(!s.by[k])return"";
+      return `<div class="wseg" style="width:${(s.by[k]/maxLoad)*100}%;background:${v.col}"
+        title="${v.l}: ${s.cnt[k]} clients · ${s.by[k]} touchpoints/yr"></div>`;}).join("");
+    const diff=avgLoad?Math.round((s.load/avgLoad-1)*100):0;
+    const diffCls=isU?"":diff>15?"d-hi":diff<-15?"d-lo":"d-mid";
+    const diffTxt=isU?"unassigned — needs an owner":(diff>0?`+${diff}% vs avg`:`${diff}% vs avg`);
+    return `<div class="wrow ${isU?'wrow-u':''}">
+      <div class="wname">${isU?'⚠️ ':''}${esc(s.name)}
+        <span class="wsub">${s.clients} client${s.clients!==1?'s':''}${s.rev?` · $${s.rev.toLocaleString()}/mo fin.`:''}${s.behind?` · <b style="color:var(--amber)">${s.behind} behind</b>`:''}</span>
+      </div>
+      <div class="wtrack">${segs||'<div class="wseg" style="width:2px;background:#ddd"></div>'}</div>
+      <div class="wload"><b>${s.load}</b><span class="wdiff ${diffCls}">${diffTxt}</span></div>
+    </div>`;}).join("");
+
+  const chipRows=real.map(s=>{
+    const chips=Object.entries(SVCMETA).map(([k,v])=>
+      s.cnt[k]?`<span class="schip" style="--c:${v.col}">${v.ic} ${v.l} <b>${s.cnt[k]}</b></span>`:"").join("");
+    return `<tr><td class="lname2">${esc(s.name)}</td>
+      <td class="mono">${s.clients}</td>
+      <td class="mono"><b>${s.load}</b></td>
+      <td><div class="chips2">${chips||'<span class="schip" style="--c:#aaa">none</span>'}</div></td></tr>`;}).join("");
+
+  let insight="";
+  if(busiest&&lightest&&busiest!==lightest&&avgLoad){
+    const ratio=(busiest.load/Math.max(1,lightest.load)).toFixed(1);
+    insight=`<div class="insight"><span>💡</span><div>
+      <b>${esc(busiest.name)}</b> is carrying the heaviest load (~${busiest.load} touchpoints/yr,
+      ${Math.round((busiest.load/avgLoad-1)*100)}% above average), while <b>${esc(lightest.name)}</b>
+      sits at ~${lightest.load}. Moving a couple of recurring clients from ${esc(busiest.name)} to
+      ${esc(lightest.name)} would even the team out${unassigned?`. You also have <b>${unassigned.clients} unassigned client${unassigned.clients!==1?'s':''}</b> with no owner.`:'.'}
+    </div></div>`;
+  }
+
+  return `<div class="stats">
+     ${stat(real.length,"Team members","var(--ink)")}
+     ${stat('$'+real.reduce((a,s)=>a+s.rev,0).toLocaleString(),"Monthly fin. revenue","var(--green)")}
+     ${stat(busiest?busiest.name:"—","Busiest","var(--amber)")}
+     ${stat(unassigned?unassigned.clients:0,"Unassigned","var(--red)")}
+    </div>
+    ${insight}
+    <div class="sect2">Workload by estimated effort</div>
+    <div class="legend">${legend}<span class="lgd-note">bar length = est. annual touchpoints (recurring filings + jobs)</span></div>
+    <div class="panel" style="padding:14px 18px">${bars}</div>
+    <div class="sect2">Service mix by person</div>
+    <div class="panel"><table><thead><tr>
+      <th>Team member</th><th>Clients</th><th>Load / yr</th><th>Services handled</th></tr></thead>
+      <tbody>${chipRows}</tbody></table></div>
+    <p class="fineprint">“Load” is an estimate of yearly touchpoints: monthly financials = 12, weekly payroll = 52,
+      bi-weekly = 26, quarterly sales tax = 4, plus a flat weight for tax returns, 1099s and renditions.
+      Adjust the weights to match how your firm actually scopes effort.</p>`;
+}
+
+/* ---------- support ---------- */
+const SUPPORT={email:"support@aifusioniqlabs.com", phone:"(832) 937-4786", tel:"+18329374786",
+  provider:"AI Fusion IQ Labs"};
+const SUP_AREAS=["Clients","Monthly Financials","Payroll","Sales Tax","1099s","Renditions",
+  "Team Workload","Password Vault","Adding / editing a client","Login or access","Something else"];
+function sv(id){const e=document.getElementById(id);return e?(e.type==="checkbox"?e.checked:e.value):"";}
+function supSubject(){
+  const client=(sv("sup_client")||"TAP Associates").trim();
+  const sum=(sv("sup_summary")||"").trim()||"(brief summary of the issue)";
+  return `${client}: ${sv("sup_urgent")?"URGENT — ":""}${sum}`;
+}
+function supBody(){
+  const L=[];
+  L.push(`Reported by: ${sv("sup_name")||"(your name)"}`);
+  L.push(`Account: ${sv("sup_client")||"TAP Associates"}`);
+  L.push(`Area of the app: ${sv("sup_area")||"(not specified)"}`);
+  L.push(`Priority: ${sv("sup_urgent")?"URGENT":"Normal"}`);
+  L.push("");
+  L.push("WHAT HAPPENED");
+  L.push(sv("sup_what")||"(describe what went wrong)");
+  L.push("");
+  L.push("WHAT I EXPECTED");
+  L.push(sv("sup_expected")||"(what you expected to happen)");
+  L.push("");
+  L.push("STEPS TO REPRODUCE");
+  L.push(sv("sup_steps")||"1. \n2. \n3. ");
+  L.push("");
+  L.push(`Screenshot attached: ${sv("sup_shot")?"Yes":"NO — please attach before sending"}`);
+  if(typeof navigator!=="undefined")L.push(`Browser: ${navigator.userAgent}`);
+  return L.join("\n");
+}
+function supRefresh(){const p=document.getElementById("supSubjPrev");if(p)p.textContent=supSubject();}
+function supEmail(){
+  window.location.href=`mailto:${SUPPORT.email}?subject=${encodeURIComponent(supSubject())}&body=${encodeURIComponent(supBody())}`;
+  toast("Opening your email app — remember to attach your screenshot before sending");
+}
+function supCopy(){
+  const txt=`To: ${SUPPORT.email}\nSubject: ${supSubject()}\n\n${supBody()}`;
+  if(typeof navigator!=="undefined"&&navigator.clipboard)navigator.clipboard.writeText(txt);
+  toast("Request copied — paste it into an email to "+SUPPORT.email);
+}
+function viewSupport(){
+  const areaOpts=SUP_AREAS.map(a=>`<option>${a}</option>`).join("");
+  return `<div class="supgrid">
+    <div class="supmain">
+      <div class="panel" style="padding:20px 22px">
+        <div class="suph">Open a support ticket</div>
+        <div class="suphint">Fill this in and tap <b>Open email</b> — it builds a properly formatted request and drops it into your email, addressed to our team. Add your screenshot, hit send, and we’ll reply with a ticket number.</div>
+
+        <div class="shot-note">📎 <div><b>A screenshot is required.</b> Email can’t pre-attach it for you, so when your email opens, attach the screenshot of the problem before sending. That one picture usually saves a whole back-and-forth.</div></div>
+
+        <div class="two sup2">
+          <div><label class="sl">Your name</label><input id="sup_name" oninput="supRefresh()" placeholder="e.g. Lizette"></div>
+          <div><label class="sl">Account / firm</label><input id="sup_client" value="TAP Associates" oninput="supRefresh()"></div>
+        </div>
+        <label class="sl">Where in the app?</label>
+        <select id="sup_area"><option value="">— choose the area —</option>${areaOpts}</select>
+
+        <label class="sl">Brief summary <span class="opt">(this becomes the subject line)</span></label>
+        <input id="sup_summary" oninput="supRefresh()" placeholder="e.g. Can’t save a new payroll client">
+
+        <label class="urgrow"><input type="checkbox" id="sup_urgent" onchange="supRefresh()">
+          <span><b>This is urgent</b> — it’s blocking work right now</span></label>
+
+        <label class="sl">What happened?</label>
+        <textarea id="sup_what" rows="3" placeholder="Describe what you were doing and what went wrong."></textarea>
+        <label class="sl">What did you expect to happen? <span class="opt">(optional)</span></label>
+        <textarea id="sup_expected" rows="2" placeholder="What you thought the app would do."></textarea>
+        <label class="sl">Steps to reproduce <span class="opt">(optional, but very helpful)</span></label>
+        <textarea id="sup_steps" rows="3" placeholder="1. Opened a client&#10;2. Switched Payroll on&#10;3. Clicked Save…"></textarea>
+
+        <label class="urgrow"><input type="checkbox" id="sup_shot">
+          <span>I’ll attach a screenshot when my email opens</span></label>
+
+        <div class="subjbox"><span>Subject preview</span><div id="supSubjPrev" class="mono">TAP Associates: (brief summary of the issue)</div></div>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+          <button class="btn" onclick="supEmail()">✉️ Open email to support</button>
+          <button class="btn alt" onclick="supCopy()">⧉ Copy request instead</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="supside">
+      <div class="panel supcontact">
+        <div class="suph2">Reach our team</div>
+        <a class="contact" href="mailto:${SUPPORT.email}"><span class="ci">✉️</span>
+          <div><div class="ct">Email</div><div class="cv">${SUPPORT.email}</div></div></a>
+        <a class="contact" href="tel:${SUPPORT.tel}"><span class="ci">📞</span>
+          <div><div class="ct">Phone</div><div class="cv">${SUPPORT.phone}</div></div></a>
+        <div class="provby">Support provided by <b>${SUPPORT.provider}</b></div>
+      </div>
+
+      <div class="panel" style="padding:18px 20px">
+        <div class="suph2">How support works</div>
+        ${[
+          ["1","Send your request","Use the form, or email us directly. Urgent issues — call the number above."],
+          ["2","We open a ticket","You’ll get a ticket number by email so you can track it."],
+          ["3","We need the details","What went wrong, what you expected, and a screenshot. The more we have, the faster we fix it."],
+          ["4","We resolve & follow up","We’ll reply on the same ticket and confirm once it’s sorted."]
+        ].map(s=>`<div class="step"><div class="stepn">${s[0]}</div>
+          <div><div class="stept">${s[1]}</div><div class="stepd">${s[2]}</div></div></div>`).join("")}
+      </div>
+
+      <div class="panel" style="padding:16px 20px">
+        <div class="suph2">Good subject lines</div>
+        <div class="egood">✓ <span class="mono">303A Properties: Monthly report won’t open</span></div>
+        <div class="egood">✓ <span class="mono">TAP Associates: URGENT — can’t log in</span></div>
+        <div class="ebad">✗ <span class="mono">help</span> · <span class="mono">it’s broken</span></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function viewVault(){
+ if(!vaultUnlocked){
+   return `<div class="panel"><div class="vault-lock">
+     <div class="big">🔒</div><h2>Restricted area</h2>
+     <p>Portal logins live behind a separate lock with their own permission list — so the rest of the team can use the client files without ever seeing passwords.</p>
+     <button class="btn" onclick="vaultUnlocked=true;render()">Unlock (demo)</button>
+   </div></div>`;
+ }
+ const rows=vault.map((v,i)=>`<tr><td><b>${esc(v.portal)}</b></td><td>${esc(v.entity)}</td>
+   <td class="mono">${esc(v.user)}</td>
+   <td class="mono"><span id="pw${i}">••••••••</span>
+     <button class="reveal" onclick="rev(${i})">show</button></td></tr>`).join("");
+ return `<div class="vault-note"><span>🏦</span><div><b>Bank logins are not here.</b>
+   Those stay in <b>TAP Bank</b> — a separate, in-office-only secure system. This vault holds software portals
+   (Toast, ADP, Comptroller, EFTPS) only, exactly as you described.</div></div>
+   <div class="panel"><table><thead><tr><th>Portal</th><th>Entity</th><th>Username</th><th>Password</th></tr></thead>
+   <tbody>${rows}</tbody></table></div>`;
+}
+const _pw=vault.map(v=>v.pw);
+function rev(i){const e=document.getElementById("pw"+i);
+ if(e.textContent.startsWith("•")){e.textContent=_pw[i];e.nextElementSibling.textContent="hide";}
+ else{e.textContent="••••••••";e.nextElementSibling.textContent="show";}}
+
+/* ---------- client slide-over ---------- */
+function openClient(id){openId=id;editing=false;drawOver();
+ document.getElementById("scrim").classList.add("show");
+ document.getElementById("over").classList.add("show");}
+function closeOver(){openId=null;
+ document.getElementById("scrim").classList.remove("show");
+ document.getElementById("over").classList.remove("show");}
+function drawOver(){
+ const c=clients.find(x=>x.id===openId); if(!c)return;
+ const svcRow=(on,key,ic,bg,title,detail)=>`
+  <div class="svc"><div class="si" style="background:${bg}">${ic}</div>
+   <div class="st"><div class="t">${title}</div><div class="d">${detail}</div></div>
+   <div class="sw ${on?'on':''}" onclick="toggleSvc(${c.id},'${key}')"></div></div>`;
+
+ if(editing){ document.getElementById("over").innerHTML=editForm(c); return; }
+
+ const FREQ_LABEL=(key)=>{
+   if(key==="fin")return c.fin?c.finFreq+" · in Financials list":"off";
+   if(key==="pr")return c.pr?c.prFreq+" · "+c.prProc:"off";
+   if(key==="stx")return c.stx?c.stxFreq+" · in Sales Tax list":"off";
+   if(key==="tax")return c.tax?c.taxType:"off"; return "";
+ };
+ document.getElementById("over").innerHTML=`
+  <div class="ohead">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+      <div class="nm">${esc(c.name)}</div>
+      <button class="ox" onclick="closeOver()">×</button>
+    </div>
+    <div class="sub"><span class="mono" style="color:#9a9484">${c.cid}</span> &nbsp;
+      <span class="badge ${c.type==='Business'?'b-biz':'b-per'}">${c.type}</span>
+      &nbsp; ${esc(c.group||'—')} · handled by <b>${esc(c.assigned)}</b></div>
+  </div>
+  <div class="obody">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div class="sect" style="margin-top:0">Everything about this client</div>
+      <button class="reveal" onclick="editing=true;drawOver()">✎ Edit details</button>
+    </div>
+    <div class="field"><span class="k">Client ID</span><span class="v mono">${c.cid}</span></div>
+    <div class="field"><span class="k">Group / Owner</span><span class="v">${esc(c.group||'—')}</span></div>
+    <div class="field"><span class="k">Email</span><span class="v">${esc(c.email)}</span></div>
+    ${c.addEmail?`<div class="field"><span class="k">Additional email</span><span class="v">${esc(c.addEmail)}</span></div>`:""}
+    <div class="field"><span class="k">Phone</span><span class="v mono">${esc(c.phone)}</span></div>
+    <div class="field"><span class="k">Address</span><span class="v">${esc(c.address)}</span></div>
+    <div class="field"><span class="k">Location</span><span class="v">${esc(c.city)}, ${c.st} ${c.zip}</span></div>
+    <div class="field"><span class="k">Assigned to</span><span class="v">${esc(c.assigned)}</span></div>
+    <div class="field"><span class="k">Type</span><span class="v">${c.type}</span></div>
+    ${c.fin?`<div class="field"><span class="k">Monthly fee</span><span class="v">${c.fee?'$'+c.fee.toLocaleString():'— not set'}</span></div>`:""}
+
+    <div class="sect">Services — flip on/off, no formulas</div>
+    ${svcRow(c.fin,"fin","📊","var(--green-soft)","Monthly Financials",FREQ_LABEL("fin"))}
+    ${svcRow(c.pr,"pr","💵","var(--blue-soft)","Payroll",FREQ_LABEL("pr"))}
+    ${svcRow(c.stx,"stx","🧾","var(--amber-soft)","Sales Tax",FREQ_LABEL("stx"))}
+    ${svcRow(c.tax,"tax","📋","#ece7f3","Tax Return",FREQ_LABEL("tax"))}
+    ${svcRow(c.t9,"t9","📄","#f0e8e2","1099 Filing",c.t9?"in 1099 worklist":"off")}
+    ${svcRow(c.rend,"rend","🏠","#e7eee8","Renditions",c.rend?"in renditions worklist":"off")}
+
+    ${["fin","pr","stx","t9","rend"].filter(svc=>c[svc]).map(svc=>{
+       const stages=STAGE_SETS[svc];
+       const leg=stages.map(s=>`<span class="lgd"><i class="lg-${s.cls}"></i>${s.l}</span>`).join("")
+         +`<span class="lgd"><i class="lg-na"></i>N/A</span>`;
+       const cells=MONTHS.map((mo,i)=>`<div style="text-align:center"><div style="font-size:10px;color:var(--muted)">${mo}</div>${mCellHTML(c,svc,i,true)}</div>`).join("");
+       return `<div class="sect">${SVC_LABEL[svc]} · ${svcFreq(c,svc)}</div>
+         <div class="legend" style="margin-bottom:8px">${leg}</div>
+         <div style="display:flex;flex-wrap:wrap;gap:6px">${cells}</div>`;
+     }).join("")}
+  </div>
+  <div class="ofoot">
+    <button class="danger" onclick="removeClient(${c.id})">Remove client</button>
+    <div style="flex:1"></div>
+    <button class="btn alt" onclick="closeOver()">Done</button>
+  </div>`;
+}
+function editForm(c){
+ const sel=(id,val,opts)=>`<select id="${id}" class="ef">${opts.map(o=>`<option ${o===val?"selected":""}>${o}</option>`).join("")}</select>`;
+ const inp=(id,val,ph)=>`<input id="${id}" class="ef" value="${esc(val)}" placeholder="${ph||""}">`;
+ return `
+  <div class="ohead">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+      <div class="nm">Edit client</div>
+      <button class="ox" onclick="editing=false;drawOver()">×</button>
+    </div>
+    <div class="sub"><span class="mono" style="color:#9a9484">${c.cid}</span> · changes save instantly, no formulas</div>
+  </div>
+  <div class="obody">
+    <style>.ef{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:9px;font:inherit;
+      font-size:14px;background:#fff;margin-bottom:4px}.ef:focus{outline:none;border-color:var(--teal);
+      box-shadow:0 0 0 3px var(--teal-soft)}.el{font-size:11px;font-weight:700;letter-spacing:.05em;
+      text-transform:uppercase;color:var(--muted);margin:12px 0 4px;display:block}.two-ef{display:flex;gap:10px}.two-ef>div{flex:1}</style>
+    <label class="el">Client / entity name</label>${inp("e_name",c.name)}
+    <div class="two-ef">
+      <div><label class="el">Type</label>${sel("e_type",c.type,["Business","Personal"])}</div>
+      <div><label class="el">Assigned to</label>${sel("e_assign",c.assigned,STAFF)}</div>
+    </div>
+    <label class="el">Group / owner</label>${inp("e_group",c.group)}
+    <label class="el">Email</label>${inp("e_email",c.email)}
+    <label class="el">Additional email</label>${inp("e_addEmail",c.addEmail,"optional")}
+    <label class="el">Phone</label>${inp("e_phone",c.phone)}
+    <label class="el">Street address</label>${inp("e_address",c.address)}
+    <div class="two-ef">
+      <div style="flex:2"><label class="el">City</label>${inp("e_city",c.city)}</div>
+      <div><label class="el">State</label>${inp("e_st",c.st)}</div>
+      <div><label class="el">ZIP</label>${inp("e_zip",c.zip)}</div>
+    </div>
+    ${c.fin?`<label class="el">Financials frequency</label>${sel("e_finFreq",c.finFreq,["Monthly","Quarterly","Yearly"])}
+      <label class="el">Monthly fee ($)</label>${inp("e_fee",c.fee||"","e.g. 750")}`:""}
+    ${c.pr?`<div class="two-ef"><div><label class="el">Payroll frequency</label>${sel("e_prFreq",c.prFreq,["Weekly","Bi-Weekly","Semi-Monthly","Monthly","Quarterly"])}</div>
+      <div><label class="el">Processor</label>${sel("e_prProc",c.prProc,["ADP","Sure Payroll","QuickBooks Desktop","Gusto","Heartland","Toast","Paychex"])}</div></div>`:""}
+    ${c.stx?`<label class="el">Sales tax frequency</label>${sel("e_stxFreq",c.stxFreq,["Monthly","Quarterly","Yearly"])}`:""}
+    ${c.tax?`<label class="el">Tax return type</label>${sel("e_taxType",c.taxType,["Business","1040","1065","1120","1120-S","990"])}`:""}
+  </div>
+  <div class="ofoot">
+    <button class="btn alt" onclick="editing=false;drawOver()">Cancel</button>
+    <div style="flex:1"></div>
+    <button class="btn" onclick="saveEdit(${c.id})">Save changes</button>
+  </div>`;
+}
+function saveEdit(id){
+ const c=clients.find(x=>x.id===id); const g=i=>document.getElementById(i);
+ const nm=g("e_name").value.trim(); if(!nm){g("e_name").focus();return;}
+ c.name=nm; c.type=g("e_type").value; c.assigned=g("e_assign").value; c.group=g("e_group").value;
+ c.email=g("e_email").value; c.addEmail=g("e_addEmail").value; c.phone=g("e_phone").value;
+ c.address=g("e_address").value; c.city=g("e_city").value; c.st=g("e_st").value; c.zip=g("e_zip").value;
+ if(c.fin&&g("e_finFreq"))c.finFreq=g("e_finFreq").value;
+ if(c.fin&&g("e_fee"))c.fee=parseInt(g("e_fee").value.replace(/[^0-9]/g,""))||0;
+ if(c.pr&&g("e_prFreq")){c.prFreq=g("e_prFreq").value;c.prProc=g("e_prProc").value;}
+ if(c.stx&&g("e_stxFreq"))c.stxFreq=g("e_stxFreq").value;
+ if(c.tax&&g("e_taxType"))c.taxType=g("e_taxType").value;
+ editing=false; toast(`<b>${shortName(c.name)}</b> updated`); drawOver(); render();
+}
+function labelOf(k){return{fin:"Financials",pr:"Payroll",stx:"Sales Tax",t9:"1099",rend:"Renditions"}[k]||k;}
+function toggleSvc(id,key){
+ const c=clients.find(x=>x.id===id); c[key]=!c[key];
+ const where=labelOf(key);
+ toast(c[key]?`<b>${shortName(c.name)}</b> added to <b>${where}</b> → it now shows in that list`
+              :`<b>${shortName(c.name)}</b> removed from <b>${where}</b>`);
+ drawOver(); renderNav();
+ if(route!=="clients"&&route!=="vault")render();
+}
+function cycle(id,svc,i,fromOver){
+ const c=clients.find(x=>x.id===id);
+ if(!isDue(c,svc,i))return;
+ const arr=track(c,svc); arr[i]=nextStage(svc,arr[i]||"");
+ if(fromOver)drawOver(); else render();
+}
+function removeClient(id){
+ const c=clients.find(x=>x.id===id);
+ clients=clients.filter(x=>x.id!==id); closeOver();
+ toast(`<b>${shortName(c.name)}</b> removed — gone from every service list too`);
+ render();
+}
+
+/* ---------- add modal ---------- */
+function openAdd(){
+ const preview="TP|BS|"+String(nextCid+1).padStart(4,"0");
+ const svc=(k,l,ic,sub)=>`
+   <div class="svccard">
+     <label class="svctop"><input type="checkbox" id="a_${k}" onchange="document.getElementById('sub_${k}')&&document.getElementById('sub_${k}').classList.toggle('open',this.checked)">
+       <span class="svcic">${ic}</span><span>${l}</span></label>
+     ${sub?`<div class="svcsub" id="sub_${k}">${sub}</div>`:""}
+   </div>`;
+ const freq=(id,opts)=>`<select id="${id}">${opts.map(o=>`<option>${o}</option>`).join("")}</select>`;
+ document.getElementById("modal").innerHTML=`
+  <h2>Add a client</h2><div class="msub">Fill this once — they’ll appear in the right worklists automatically.</div>
+  <div class="mform">
+    <div class="cidbox">New Client ID <b class="mono">${preview}</b><span>auto-assigned</span></div>
+
+    <div class="fsect">Client</div>
+    <label>Client / entity name</label><input id="a_name" placeholder="e.g. Sunrise Holdings LLC" autofocus>
+    <div class="two">
+      <div><label>Type</label><select id="a_type"><option>Business</option><option>Personal</option></select></div>
+      <div><label>Group / owner</label><input id="a_group" placeholder="e.g. Gambhir"></div>
+    </div>
+    <label>Assigned to</label><select id="a_assign">${STAFF.map(s=>`<option ${s==='Unassigned'?'selected':''}>${s}</option>`).join("")}</select>
+
+    <div class="fsect">Contact</div>
+    <label>Email</label><input id="a_email" placeholder="client@email.com">
+    <label>Additional email <span class="opt">(optional)</span></label><input id="a_addEmail" placeholder="cc@email.com">
+    <label>Phone</label><input id="a_phone" placeholder="(713) 555-0100">
+    <label>Street address</label><input id="a_address" placeholder="123 Main St.">
+    <div class="two">
+      <div style="flex:2"><label>City</label><input id="a_city" placeholder="Houston"></div>
+      <div><label>State</label><input id="a_st" value="TX"></div>
+      <div><label>ZIP</label><input id="a_zip" placeholder="77002"></div>
+    </div>
+
+    <div class="fsect">Services <span class="opt">— tick what you do for them; details appear as you tick</span></div>
+    ${svc("fin","Monthly Financials","📊",`<div class="two"><div><label>Frequency</label>${freq("a_finFreq",["Monthly","Quarterly","Yearly"])}</div>
+        <div><label>Monthly fee ($)</label><input id="a_fee" placeholder="750"></div></div>`)}
+    ${svc("pr","Payroll","💵",`<div class="two"><div><label>Frequency</label>${freq("a_prFreq",["Weekly","Bi-Weekly","Semi-Monthly","Monthly","Quarterly"])}</div>
+        <div><label>Processor</label>${freq("a_prProc",["ADP","Sure Payroll","QuickBooks Desktop","Gusto","Heartland","Toast","Paychex"])}</div></div>`)}
+    ${svc("stx","Sales Tax","🧾",`<label>Filing frequency</label>${freq("a_stxFreq",["Monthly","Quarterly","Yearly"])}`)}
+    ${svc("tax","Tax Return","📋",`<label>Return type</label>${freq("a_taxType",["Business","1040","1065","1120","1120-S","990"])}`)}
+    ${svc("t9","1099 Filing","📄","")}
+    ${svc("rend","Renditions (property tax)","🏠","")}
+  </div>
+  <div class="mfoot">
+    <button class="btn alt" onclick="closeModal()">Cancel</button>
+    <button class="btn" onclick="saveClient()">＋ Add client</button>
+  </div>`;
+ document.getElementById("mscrim").classList.add("show");
+}
+function closeModal(){document.getElementById("mscrim").classList.remove("show");}
+function saveClient(){
+ const g=id=>document.getElementById(id), val=id=>g(id)?g(id).value:"";
+ const name=g("a_name").value.trim(); if(!name){g("a_name").focus();return;}
+ const dup=clients.find(x=>x.name.toLowerCase()===name.toLowerCase());
+ if(dup&&!confirm(`A client named “${name}” already exists (${dup.cid}). Add anyway?`))return;
+ const c=mk(name,val("a_type"),val("a_group"),val("a_assign"),val("a_city")||"Houston",
+   val("a_st")||"TX",val("a_email")||"—",val("a_phone")||"—",{
+     addEmail:val("a_addEmail"),address:val("a_address")||"—",zip:val("a_zip")||"—",
+     fin:g("a_fin").checked,finFreq:val("a_finFreq"),fee:parseInt((val("a_fee")||"").replace(/[^0-9]/g,""))||0,
+     pr:g("a_pr").checked,prFreq:val("a_prFreq"),prProc:val("a_prProc"),
+     stx:g("a_stx").checked,stxFreq:val("a_stxFreq"),
+     tax:g("a_tax").checked,taxType:val("a_taxType"),
+     t9:g("a_t9").checked,rend:g("a_rend").checked
+   },["","","","","","","","","","","",""]);
+ clients.push(c); closeModal();
+ const on=[c.fin&&"Financials",c.pr&&"Payroll",c.stx&&"Sales Tax",c.t9&&"1099s",c.rend&&"Renditions"].filter(Boolean);
+ toast(`<b>${shortName(name)}</b> added as ${c.cid}` + (on.length?` → now in ${on.join(", ")}`:""));
+ route="clients"; render();
+}
+function exportCSV(){
+ const cols=["Client ID","Name","Type","Group","Assigned","Email","Phone","City","State","ZIP",
+   "Financials","Fin Freq","Monthly Fee","Payroll","PR Freq","Processor","Sales Tax","STax Freq","Tax Return","1099","Renditions"];
+ const yn=b=>b?"Yes":"";
+ const rows=clients.slice().sort((a,b)=>a.name.localeCompare(b.name)).map(c=>[
+   c.cid,c.name,c.type,c.group,c.assigned,c.email,c.phone,c.city,c.st,c.zip,
+   yn(c.fin),c.fin?c.finFreq:"",c.fin&&c.fee?c.fee:"",yn(c.pr),c.pr?c.prFreq:"",c.pr?c.prProc:"",
+   yn(c.stx),c.stx?c.stxFreq:"",c.tax?c.taxType:"",yn(c.t9),yn(c.rend)]);
+ const csv=[cols,...rows].map(r=>r.map(v=>`"${String(v==null?"":v).replace(/"/g,'""')}"`).join(",")).join("\n");
+ const a=document.createElement("a");
+ a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));
+ a.download="TAP_Clients_export.csv"; a.click();
+ toast(`Exported ${clients.length} clients to CSV (opens in Excel)`);
+}
+
+/* ---------- misc ---------- */
+function wire(){
+ const qi=document.getElementById("q");
+ if(qi)qi.oninput=e=>{q=e.target.value.toLowerCase();const v=document.getElementById("view");
+   const pos=e.target.selectionStart;v.innerHTML=viewClients();wire();
+   const n=document.getElementById("q");if(n){n.focus();n.setSelectionRange(pos,pos);}};
+ const seg=document.getElementById("seg");
+ if(seg)seg.querySelectorAll("button").forEach(b=>b.onclick=()=>{typeFilter=b.dataset.t;render();});
+ const st=document.getElementById("staff");
+ if(st)st.onchange=e=>{staffFilter=e.target.value;render();};
+}
+let toastTimer;
+function toast(html){const t=document.getElementById("toast");t.innerHTML=html;t.classList.add("show");
+ clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove("show"),3400);}
+function esc(s){return(s==null?"":String(s)).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));}
+function shortName(n){return n.length>26?n.slice(0,24)+"…":n;}
+render();
+</script>
+</body>
+</html>
